@@ -1,0 +1,6 @@
+brotli
+python-dotenv
+asyncio
+aiohttp
+uuid
+requests
