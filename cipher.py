@@ -4,42 +4,14 @@ import base64
 import time
 import os
 from dotenv import load_dotenv
-
-
 load_dotenv()
 Bearer = os.getenv('Bearer')
 DEBUG = False
 
-BASE_URL = "https://api.hamsterkombatgame.io/clicker"
-HEADERS_OPT = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.1",
-    "Accept": "*/*",
-    "Accept-Language": "ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3",
-    "Accept-Encoding": "gzip, deflate, br, zstd",
-    "Access-Control-Request-Method": "POST",
-    "Access-Control-Request-Headers": "authorization,content-type",
-    "Referer": "https://hamsterkombatgame.io/",
-    "Connection": "keep-alive",
-    "Sec-Fetch-Dest": "empty",
-    "Sec-Fetch-Mode": "cors",
-    "Sec-Fetch-Site": "same-site",
-    "Priority": "u=4"
-}
 
-HEADERS_POST = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.1",
-    "Accept": "application/json",
-    "Accept-Language": "ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3",
-    "Accept-Encoding": "gzip, deflate, br, zstd",
-    "Referer": "https://hamsterkombatgame.io/",
-    "Authorization": f"Bearer {Bearer}",
-    "Content-Type": "application/json",
-    "Connection": "keep-alive",
-    "Sec-Fetch-Dest": "empty",
-    "Sec-Fetch-Mode": "cors",
-    "Sec-Fetch-Site": "same-site",
-    "Priority": "u=1"
-}
+
+BASE_URL = "https://api.hamsterkombatgame.io/clicker"
+
 
 def debug_print(*args):
     if DEBUG:
