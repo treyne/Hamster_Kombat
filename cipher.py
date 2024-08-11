@@ -4,14 +4,16 @@ import base64
 import time
 import os
 from dotenv import load_dotenv
+
+# Загрузка переменных из .env файла
 load_dotenv()
 Bearer = os.getenv('Bearer')
 DEBUG = False
 
-
+# Импортируем функции для получения заголовков
+from headers import get_headers_opt, get_headers_post
 
 BASE_URL = "https://api.hamsterkombatgame.io/clicker"
-
 
 def debug_print(*args):
     if DEBUG:
@@ -26,7 +28,8 @@ def process_string(encoded_str):
     return decoded_str
 
 def perform_options_request(url):
-    response = requests.options(url, headers=HEADERS_OPT)
+    headers_opt = get_headers_opt()  # Получаем заголовки OPTIONS запроса
+    response = requests.options(url, headers=headers_opt)
     debug_print(f"Status Code: {response.status_code}")
     debug_print("Headers:")
     for header, value in response.headers.items():
@@ -39,14 +42,15 @@ def perform_options_request(url):
 def fetch_config():
     url = f"{BASE_URL}/config"
     perform_options_request(url)
-    response = requests.post(url, headers=HEADERS_POST)
+    headers_post = get_headers_post(Bearer)  # Получаем заголовки POST запроса с актуальным Bearer токеном
+    response = requests.post(url, headers=headers_post)
     debug_print(response.headers)
     debug_print(f"Status Code: {response.status_code}")
     if response.content:
         try:
             response_json = response.json()
             debug_print('JSON = ', response_json)
-            return response_json.get('dailyCipher', {}).get('cipher'),response_json.get('dailyCipher', {}).get('isClaimed')
+            return response_json.get('dailyCipher', {}).get('cipher'), response_json.get('dailyCipher', {}).get('isClaimed')
         except json.JSONDecodeError as e:
             debug_print("JSON decode error: ", e)
             return None
@@ -56,13 +60,14 @@ def claim_daily_cipher(cipher):
     url = f"{BASE_URL}/claim-daily-cipher"
     perform_options_request(url)
     data = {"cipher": cipher}
-    response = requests.post(url, headers=HEADERS_POST, json=data)
+    headers_post = get_headers_post(Bearer)  # Используем актуальный Bearer токен
+    response = requests.post(url, headers=headers_post, json=data)
     debug_print('claim-daily-cipher JSON = ', response.text)
     print('dailyCipher = ', response.json().get('dailyCipher', {}).get('isClaimed'))
 
 def main():
     cipher_base64 = fetch_config()
-    if cipher_base64[0]:
+    if cipher_base64 and cipher_base64[0]:
         debug_print('cipher Base64 = ', cipher_base64[0])
         cipher = process_string(cipher_base64[0])
         print('cipher = ', cipher)
