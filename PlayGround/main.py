@@ -80,6 +80,8 @@ async def gen(app_token, promo_id):
     await register_event(token, promo_id)
     code_data = await create_code(token, promo_id)
     print(f'Сгенерированный код для {app_token} и {promo_id}: {code_data}')
+    with open ("codoe.txt", "a")
+        file.write(code_data)
 
 async def main():
     try:
