@@ -49,7 +49,7 @@ def account_info():
     return None
 
 def game_config():
-    url = f"{BASE_URL}/clicker/config"
+    url = f"{BASE_URL}/interlude/config"
     perform_options_request(url)
     headers_post = get_headers_post(Bearer)  # Получаем заголовки POST запроса
     response = requests.post(url, headers=headers_post)
@@ -65,10 +65,11 @@ def game_config():
     return None
 
 def start_keys_minigame():
-    url = f"{BASE_URL}/clicker/start-keys-minigame"
+    url = f"{BASE_URL}/interlude/start-keys-minigame"
     perform_options_request(url)
     headers_post = get_headers_post(Bearer)  # Получаем заголовки POST запроса
-    response = requests.post(url, headers=headers_post)
+    data={'miniGameId': 'Candles'}
+    response = requests.post(url, headers=headers_post, json=data)
     debug_print(f"Status Code: {response.status_code}")
     if response.content:
         try:
@@ -81,9 +82,9 @@ def start_keys_minigame():
     return None
 
 def claim_daily_keys_minigame(cipher):
-    url = f"{BASE_URL}/clicker/claim-daily-keys-minigame"
+    url = f"{BASE_URL}/interlude/claim-daily-keys-minigame"
     perform_options_request(url)
-    data = {"cipher": cipher}
+    data = {"cipher": cipher, "miniGameId": "Candles"}
     headers_post = get_headers_post(Bearer)  # Получаем заголовки POST запроса
     response = requests.post(url, headers=headers_post, json=data)
     debug_print(f"Status Code: {response.status_code}")
@@ -96,6 +97,49 @@ def claim_daily_keys_minigame(cipher):
             debug_print("JSON decode error: ", e)
             return None
     return None
+    
+    
+    
+    
+    
+def get_game_cipher(start_number: str):
+    magic_index = int(start_number % (len(str(start_number)) - 2))
+    res = ""
+    for i in range(len(str(start_number))):
+        res += '0' if i == magic_index else str(int(random.random() * 10))
+    return res    
+    
+    
+    
+def get_mini_game_cipher(user_id: int,
+                               start_date: str,
+                               mini_game_id: str,
+                               score: int):
+    secret1 = "R1cHard_AnA1"
+    secret2 = "G1ve_Me_y0u7_Pa55w0rD"
+
+    start_dt = datetime.datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%S.%fZ")
+
+    start_number = int(start_dt.replace(tzinfo=datetime.timezone.utc).timestamp())
+    cipher_score = (start_number + score) * 2
+
+    combined_string = f'{secret1}{cipher_score}{secret2}'
+
+    sig = hashlib.sha256(combined_string.encode()).digest()
+    sig = base64.b64encode(sig).decode()
+
+    game_cipher = get_game_cipher(start_number=start_number)
+
+    data = f'{game_cipher}|{user_id}|{mini_game_id}|{cipher_score}|{sig}'
+
+    encoded_data = base64.b64encode(data.encode()).decode()
+
+    return encoded_data    
+    
+    
+    
+    
+
 
 def main():
     user_id = account_info()
@@ -105,9 +149,13 @@ def main():
         start_keys_minigame()
         game_sleep_time = random.randint(12, 26)
         time.sleep(game_sleep_time)
-        cipher_prepare = f"0{game_sleep_time}{random.randint(10000000000, 99999999999)}"[:10]
-        cipher_prepare = f"{cipher_prepare}|{user_id}"
-        cipher = base64.b64encode(cipher_prepare.encode()).decode()
+        get_mini_game_cipher(user_id: user_id,
+                               start_date: str,
+                               mini_game_id: 'Candles',
+                               score: '0'):
+
+
+
         print("cipher =  ", cipher)
         status = claim_daily_keys_minigame(cipher)
         print("MiniGame =  ", status)
