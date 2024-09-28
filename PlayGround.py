@@ -14,14 +14,30 @@ DEBUG = True
 from headers import get_headers_opt, get_headers_post
 
 configurations = [
-    {'app_token': 'd28721be-fd2d-4b45-869e-9f253b554e50', 'promo_id': '43e35910-c168-4634-ad4f-52fd764a843f','rnd1':'360','rnd2':'720'},    #Bike Ride 3D
-    {'app_token': 'd1690a07-3780-4068-810f-9b5bbf2931b2', 'promo_id': 'b4170868-cef0-424f-8eb9-be0622e8e8e3','rnd1':'400','rnd2':'800'},    #Chain Cube 2048
-    {'app_token': '74ee0b5b-775e-4bee-974f-63e7f4d5bacb', 'promo_id': 'fe693b26-b342-4159-8808-15e3ff7f8767','rnd1':'310','rnd2':'720'},    #My Clone Army
-    {'app_token': '82647f43-3f87-402d-88dd-09a90025313f', 'promo_id': 'c4480ac7-e178-4973-8061-9ed5b2e17954','rnd1':'720','rnd2':'900'},    #Train Miner
-    {'app_token': '8d1cc2ad-e097-4b86-90ef-7a27e19fb833', 'promo_id': 'dc128d28-c45b-411c-98ff-ac7726fbaea4','rnd1':'3720','rnd2':'7440'},  #Merge Away
-    {'app_token': '61308365-9d16-4040-8bb0-2f4a4c69074c', 'promo_id': '61308365-9d16-4040-8bb0-2f4a4c69074c','rnd1':'450','rnd2':'1220'},   #Twerk Race
+    {'app_token': 'd02fc404-8985-4305-87d8-32bd4e66bb16', 'promo_id': '61308365-9d16-4040-8bb0-2f4a4c69074c','rnd1':'3','rnd2':'20'},       #Factory World
+    {'app_token': 'daab8f83-8ea2-4ad0-8dd5-d33363129640', 'promo_id': 'd02fc404-8985-4305-87d8-32bd4e66bb16','rnd1':'400','rnd2':'800'},    #Among Water
+    {'app_token': '4bdc17da-2601-449b-948e-f8c7bd376553', 'promo_id': '4bdc17da-2601-449b-948e-f8c7bd376553','rnd1':'310','rnd2':'720'},    #Count Masters
+    {'app_token': 'd2378baf-d617-417a-9d99-d685824335f0', 'promo_id': 'c4480ac7-e178-4973-8061-9ed5b2e17954','rnd1':'720','rnd2':'900'},    #Pin Out Master
+    {'app_token': '4bf4966c-4d22-439b-8ff2-dc5ebca1a600', 'promo_id': '4bf4966c-4d22-439b-8ff2-dc5ebca1a600','rnd1':'3720','rnd2':'7440'},  #Hide Ball
+    {'app_token': 'bc72d3b9-8e91-4884-9c33-f72482f0db37', 'promo_id': 'bc72d3b9-8e91-4884-9c33-f72482f0db37','rnd1':'450','rnd2':'1220'},   #Bouncemasters
+    {'app_token': '04ebd6de-69b7-43d1-9c4b-04a6ca3305af', 'promo_id': '04ebd6de-69b7-43d1-9c4b-04a6ca3305af','rnd1':'450','rnd2':'1220'},   #Stone Age
+    {'app_token': '112887b0-a8af-4eb2-ac63-d82df78283d9', 'promo_id': '112887b0-a8af-4eb2-ac63-d82df78283d9','rnd1':'450','rnd2':'1220'},   #Fluff Crusade
+    {'app_token': 'b2436c89-e0aa-4aed-8046-9b0515e1c46b', 'promo_id': 'b2436c89-e0aa-4aed-8046-9b0515e1c46b','rnd1':'450','rnd2':'1220'},   #Zoopolis
+    {'app_token': 'e68b39d2-4880-4a31-b3aa-0393e7df10c7', 'promo_id': 'e68b39d2-4880-4a31-b3aa-0393e7df10c7','rnd1':'450','rnd2':'1220'},   #Tile Trio
+    {'app_token': 'ef319a80-949a-492e-8ee0-424fb5fc20a6', 'promo_id': 'ef319a80-949a-492e-8ee0-424fb5fc20a6','rnd1':'450','rnd2':'1220'},   #Mow and Trim
     {'app_token': '2aaf5aee-2cbc-47ec-8a3f-0962cc14bc71', 'promo_id': '2aaf5aee-2cbc-47ec-8a3f-0962cc14bc71','rnd1':'450','rnd2':'1220'},   #Polysphere
+    {'app_token': '61308365-9d16-4040-8bb0-2f4a4c69074c', 'promo_id': '61308365-9d16-4040-8bb0-2f4a4c69074c','rnd1':'450','rnd2':'1220'},   #Twerk Race
+    {'app_token': '8d1cc2ad-e097-4b86-90ef-7a27e19fb833', 'promo_id': 'dc128d28-c45b-411c-98ff-ac7726fbaea4','rnd1':'450','rnd2':'1220'},   #Merge Away
+    {'app_token': 'd1690a07-3780-4068-810f-9b5bbf2931b2', 'promo_id': 'b4170868-cef0-424f-8eb9-be0622e8e8e3','rnd1':'450','rnd2':'1220'},   #Chain Cube 2048
+    {'app_token': '', 'promo_id': '','rnd1':'450','rnd2':'1220'},   #
+    {'app_token': '', 'promo_id': '','rnd1':'450','rnd2':'1220'},   #
+    {'app_token': '', 'promo_id': '','rnd1':'450','rnd2':'1220'},   #
+    
+    
 ]
+
+
+
 
 def generate_client_id():
     timestamp = int(time.time() * 1000)
@@ -60,7 +76,7 @@ def register_event(token, promo_id):
         response.raise_for_status()
         data = response.json()
         if not data.get('hasCode', False):
-            time.sleep(20)
+            time.sleep(100)
             return register_event(token, promo_id)  # Рекурсивный вызов
         else:
             return True
