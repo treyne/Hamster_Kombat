@@ -61,7 +61,7 @@ def game_config():
         try:
             response_json = response.json()
             debug_print('game_config JSON = ', response_json) 
-            return response_json.get('dailyKeysMiniGames', {}).get('Candles', {}).get('isClaimed'), response_json.get('dailyKeysMiniGames', {}).get('Candles', {}).get('startDate')
+            return response_json.get('dailyKeysMiniGames', {}).get('Tiles', {}).get('isClaimed'), response_json.get('dailyKeysMiniGames', {}).get('Tiles', {}).get('startDate')
         except json.JSONDecodeError as e:
             debug_print("JSON decode error: ", e)
             return None
@@ -71,7 +71,7 @@ def start_keys_minigame():
     url = f"{BASE_URL}/interlude/start-keys-minigame"
     perform_options_request(url)
     headers_post = get_headers_post(Bearer)  # Получаем заголовки POST запроса
-    data={'miniGameId': 'Candles'}
+    data={'miniGameId': 'Tiles'}
     response = requests.post(url, headers=headers_post, json=data)
     debug_print(f"Status Code: {response.status_code}")
     if response.content:
@@ -87,7 +87,7 @@ def start_keys_minigame():
 def claim_daily_keys_minigame(cipher):
     url = f"{BASE_URL}/interlude/claim-daily-keys-minigame"
     perform_options_request(url)
-    data = {"cipher": cipher, "miniGameId": "Candles"}
+    data = {"cipher": cipher, "miniGameId": "Tiles"}
     headers_post = get_headers_post(Bearer)  # Получаем заголовки POST запроса
     response = requests.post(url, headers=headers_post, json=data)
     debug_print(f"Status Code: {response.status_code}")
@@ -151,12 +151,12 @@ def main():
     if not isClaimed:
         debug_print("isClaimed: ", isClaimed)
         start_keys_minigame()
-        game_sleep_time = random.randint(12, 26)
+        game_sleep_time = random.randint(120, 300)
         time.sleep(game_sleep_time)
         cipher = get_mini_game_cipher(user_id=user_id,
                                    start_date=startDate,
-                                   mini_game_id='Candles',
-                                   score=int(0))
+                                   mini_game_id='Tiles',
+                                   score=random.randint(300, 500))
 
 
 
