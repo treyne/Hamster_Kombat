@@ -61,7 +61,7 @@ def game_config():
         try:
             response_json = response.json()
             debug_print('game_config JSON = ', response_json) 
-            return response_json.get('dailyKeysMiniGames', {}).get('Tiles', {}).get('isClaimed'), response_json.get('dailyKeysMiniGames', {}).get('Tiles', {}).get('startDate')
+            return response_json
         except json.JSONDecodeError as e:
             debug_print("JSON decode error: ", e)
             return None
@@ -95,7 +95,7 @@ def claim_daily_keys_minigame(cipher):
         try:
             response_json = response.json()
             debug_print('JSON = ', response_json)
-            return response_json.get('dailyKeysMiniGame', {}).get('isClaimed')
+            return response_json.get('dailyKeysMiniGames', {}).get('isClaimed')
         except json.JSONDecodeError as e:
             debug_print("JSON decode error: ", e)
             return None
@@ -146,20 +146,27 @@ def get_mini_game_cipher(user_id: int,
 
 def main():
     user_id = account_info()
-    isClaimed,startDate = game_config()
+    game_config_json = game_config()
+    isClaimed = game_config_json.get('dailyKeysMiniGames', {}).get('Tiles', {}).get('isClaimed')
+    start_date = game_config_json.get('dailyKeysMiniGames', {}).get('Tiles', {}).get('startDate')
+    remain_points = game_config_json.get('dailyKeysMiniGames', {}).get('Tiles', {}).get('remainPoints')
+    debug_print('remainPoints = ', remain_points)
+    
     print("user id: ", user_id)
     if not isClaimed:
         debug_print("isClaimed: ", isClaimed)
         start_keys_minigame()
         game_sleep_time = random.randint(120, 300)
         time.sleep(game_sleep_time)
+        game_score = random.randint(300, 500)
+        if game_score > remain_points:
+            game_score = remain_points
+            debug_print('Last iterration, game_score = ', game_score)
+        
         cipher = get_mini_game_cipher(user_id=user_id,
-                                   start_date=startDate,
+                                   start_date=start_date,
                                    mini_game_id='Tiles',
-                                   score=random.randint(300, 500))
-
-
-
+                                   score=game_score)
         print("cipher =  ", cipher)
         status = claim_daily_keys_minigame(cipher)
         print("MiniGame =  ", status)
