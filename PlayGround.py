@@ -14,25 +14,38 @@ DEBUG = True
 from headers import get_headers_opt, get_headers_post
 
 configurations = [
-    {'app_token': 'd02fc404-8985-4305-87d8-32bd4e66bb16', 'promo_id': 'd02fc404-8985-4305-87d8-32bd4e66bb16','rnd1':'80','rnd2':'120','game':'Factory World'},     
-    {'app_token': 'daab8f83-8ea2-4ad0-8dd5-d33363129640', 'promo_id': 'daab8f83-8ea2-4ad0-8dd5-d33363129640','rnd1':'80','rnd2':'100','game':'Among Water'},     
-    {'app_token': '4bdc17da-2601-449b-948e-f8c7bd376553', 'promo_id': '4bdc17da-2601-449b-948e-f8c7bd376553','rnd1':'80','rnd2':'100','game':'Count Masters'},     
-    {'app_token': 'd2378baf-d617-417a-9d99-d685824335f0', 'promo_id': 'd2378baf-d617-417a-9d99-d685824335f0','rnd1':'80','rnd2':'100','game':'Pin Out Master'},     
-    {'app_token': '4bf4966c-4d22-439b-8ff2-dc5ebca1a600', 'promo_id': '4bf4966c-4d22-439b-8ff2-dc5ebca1a600','rnd1':'80','rnd2':'100','game':'Hide Ball'},     
-    {'app_token': 'bc72d3b9-8e91-4884-9c33-f72482f0db37', 'promo_id': 'bc72d3b9-8e91-4884-9c33-f72482f0db37','rnd1':'80','rnd2':'100','game':'Bouncemasters'},     
-    {'app_token': '04ebd6de-69b7-43d1-9c4b-04a6ca3305af', 'promo_id': '04ebd6de-69b7-43d1-9c4b-04a6ca3305af','rnd1':'80','rnd2':'100','game':'Stone Age'},     
-    {'app_token': 'b2436c89-e0aa-4aed-8046-9b0515e1c46b', 'promo_id': 'b2436c89-e0aa-4aed-8046-9b0515e1c46b','rnd1':'80','rnd2':'100','game':'Zoopolis'},     
-    {'app_token': '2aaf5aee-2cbc-47ec-8a3f-0962cc14bc71', 'promo_id': '2aaf5aee-2cbc-47ec-8a3f-0962cc14bc71','rnd1':'80','rnd2':'100','game':'Polysphere'},     
-    {'app_token': '8d1cc2ad-e097-4b86-90ef-7a27e19fb833', 'promo_id': 'dc128d28-c45b-411c-98ff-ac7726fbaea4','rnd1':'80','rnd2':'100','game':'Merge Away'},     
-    {'app_token': 'd1690a07-3780-4068-810f-9b5bbf2931b2', 'promo_id': 'b4170868-cef0-424f-8eb9-be0622e8e8e3','rnd1':'80','rnd2':'100','game':'Chain Cube 2048'},     
-    {'app_token': '82647f43-3f87-402d-88dd-09a90025313f', 'promo_id': 'c4480ac7-e178-4973-8061-9ed5b2e17954','rnd1':'450','rnd2':'1220','game':'Snake Run'},   
-    {'app_token': 'ed526e8c-e6c8-40fd-b72a-9e78ff6a2054', 'promo_id': 'ed526e8c-e6c8-40fd-b72a-9e78ff6a2054','rnd1':'450','rnd2':'1220','game':'nn1'},   
-    {'app_token': 'c8e017e2-8817-4d02-bce6-b951e74bb18f', 'promo_id': 'c8e017e2-8817-4d02-bce6-b951e74bb18f','rnd1':'450','rnd2':'1220','game':'nn2'},   
-    
+    #{'app_token': 'd02fc404-8985-4305-87d8-32bd4e66bb16', 'promo_id': 'd02fc404-8985-4305-87d8-32bd4e66bb16','rnd1':'80','rnd2':'120','game':'Factory World'},         
+    #{'app_token': '4bdc17da-2601-449b-948e-f8c7bd376553', 'promo_id': '4bdc17da-2601-449b-948e-f8c7bd376553','rnd1':'80','rnd2':'100','game':'Count Masters'},         
+    #{'app_token': '4bf4966c-4d22-439b-8ff2-dc5ebca1a600', 'promo_id': '4bf4966c-4d22-439b-8ff2-dc5ebca1a600','rnd1':'80','rnd2':'100','game':'Hide Ball'},     
+    #{'app_token': 'bc72d3b9-8e91-4884-9c33-f72482f0db37', 'promo_id': 'bc72d3b9-8e91-4884-9c33-f72482f0db37','rnd1':'80','rnd2':'100','game':'Bouncemasters'},     
+    #{'app_token': '04ebd6de-69b7-43d1-9c4b-04a6ca3305af', 'promo_id': '04ebd6de-69b7-43d1-9c4b-04a6ca3305af','rnd1':'80','rnd2':'100','game':'Stone Age'},     
+    #{'app_token': 'b2436c89-e0aa-4aed-8046-9b0515e1c46b', 'promo_id': 'b2436c89-e0aa-4aed-8046-9b0515e1c46b','rnd1':'80','rnd2':'100','game':'Zoopolis'},     
+    #{'app_token': '2aaf5aee-2cbc-47ec-8a3f-0962cc14bc71', 'promo_id': '2aaf5aee-2cbc-47ec-8a3f-0962cc14bc71','rnd1':'80','rnd2':'100','game':'Polysphere'},     
+    #{'app_token': '8d1cc2ad-e097-4b86-90ef-7a27e19fb833', 'promo_id': 'dc128d28-c45b-411c-98ff-ac7726fbaea4','rnd1':'80','rnd2':'100','game':'Merge Away'},     
+    #{'app_token': 'd1690a07-3780-4068-810f-9b5bbf2931b2', 'promo_id': 'b4170868-cef0-424f-8eb9-be0622e8e8e3','rnd1':'80','rnd2':'100','game':'Chain Cube 2048'},     
+    #{'app_token': '82647f43-3f87-402d-88dd-09a90025313f', 'promo_id': 'c4480ac7-e178-4973-8061-9ed5b2e17954','rnd1':'125','rnd2':'140','game':'Train Miner'},   
+    #{'app_token': 'ed526e8c-e6c8-40fd-b72a-9e78ff6a2054', 'promo_id': 'ed526e8c-e6c8-40fd-b72a-9e78ff6a2054','rnd1':'100','rnd2':'122','game':'Cooking Stories'},   
+    {'app_token': 'c8e017e2-8817-4d02-bce6-b951e74bb18f', 'promo_id': 'c8e017e2-8817-4d02-bce6-b951e74bb18f','rnd1':'100','rnd2':'122','game':'Snake Run'},   
+    #{'app_token': 'eb518c4b-e448-4065-9d33-06f3039f0fcb', 'promo_id': 'eb518c4b-e448-4065-9d33-06f3039f0fcb','rnd1':'100','rnd2':'122','game':'Infected Frontier'},   
     
 ]
 
 
+def debug_print(*args):
+    if DEBUG:
+        print(*args)
+
+
+def countdown_timer(seconds, text):
+    while seconds:
+        mins, secs = divmod(seconds, 60)
+        timer = text + " {:02d}:{:02d}".format(mins, secs)
+        print(timer, end="\r")  # Перезаписываем строку
+        time.sleep(1)
+        seconds -= 1
+    # Очищаем строку после завершения
+    print(' ' * len(timer), end='\r')
+    
 
 
 def generate_client_id():
@@ -53,14 +66,15 @@ def login_client(app_token):
         })
         response.raise_for_status()
         data = response.json()
-        print('/promo/login-client = ',data['clientToken'])
+        print('login-client [clientToken] = ',data['clientToken'])
         return data['clientToken']
     except Exception as error:
         print(f'Ошибка при входе клиента: {error}')
-        time.sleep(90)
+        countdown_timer(20, 'timer after login_client Error')
         return login_client(app_token)  # Рекурсивный вызов
 
-def register_event(token, promo_id):
+
+def register_event(token, promo_id, delay):
     event_id = str(uuid.uuid4())
     print (event_id)
     try:
@@ -75,14 +89,18 @@ def register_event(token, promo_id):
         response.raise_for_status()
         data = response.json()
         if not data.get('hasCode', False):
-            time.sleep(10)
+            countdown_timer(delay, 'next try register_event')
             print (data)
-            return register_event(token, promo_id)  # Рекурсивный вызов
+            return register_event(token, promo_id, delay)  # Рекурсивный вызов
         else:
             return True
     except Exception as error:
-        time.sleep(20)
-        return register_event(token, promo_id)  # Рекурсивный вызов в случае ошибки
+        print(f'Ошибка при register_event: {error}')
+        countdown_timer(20, 'Задержка после ошибки register_event')
+        return register_event(token, promo_id, delay)  # Рекурсивный вызов в случае ошибки
+
+
+
 
 def create_code(token, promo_id):
     response = None
@@ -98,7 +116,7 @@ def create_code(token, promo_id):
             response = resp.json()
         except Exception as error:
             print(f'Ошибка при создании кода: {error}')
-            time.sleep(20)
+            countdown_timer(20, 'Задержка после ошибки создании кода')
     return response['promoCode']
 
 
@@ -108,13 +126,63 @@ def create_code(token, promo_id):
 def gen(app_token, promo_id, delay, game):
     token = login_client(app_token)
     print(f'Token for {app_token}: {token} game = {game}')
-    register_event(token, promo_id)
-    time.sleep(delay)
+    countdown_timer(delay, 'wait register_event')
+    register_event(token, promo_id, delay)
     code_data = create_code(token, promo_id)
     print(f'Сгенерированный код для {app_token} и {promo_id}: {code_data}')
-    
     return code_data
 
+
+
+
+
+
+
+
+def get_promos():
+#-----------------------------------------------###OPTIONS###-----------------------------------------------#  
+        
+        resp = requests.options('https://api.hamsterkombatgame.io/interlude/get-promos', 
+        headers={
+            'accept': '*/*',
+            'accept-language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
+            'Content-Type': 'application/json; charset=utf-8',
+            'priority': 'u=1, i',
+            'sec-fetch-dest': 'empty',
+            'sec-fetch-mode': 'cors',
+            'sec-fetch-site': 'same-site',
+            'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Mobile Safari/537.36', 
+            'referrer': 'https://hamsterkombatgame.io/',
+        })
+        print(f"Status Code: {resp.status_code}")
+      
+        time.sleep(3)
+#-----------------------------------------------###POST###-----------------------------------------------#     
+        resp = requests.post('https://api.hamsterkombatgame.io/interlude/get-promos', 
+        headers={
+            'accept': 'application/json',
+            'accept-language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
+            "Authorization": f"Bearer {Bearer_account}",
+            'Content-Type': 'application/json; charset=utf-8',
+            'priority': 'u=1, i',
+            'sec-fetch-dest': 'empty',
+            'sec-fetch-mode': 'cors',
+            'sec-fetch-site': 'same-site',
+            'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Mobile Safari/537.36', 
+            'referrer': 'https://hamsterkombatgame.io/',
+        })
+        
+        print(f"Status Code: {resp.status_code}")
+        if resp.content:
+            try:
+                response_json = resp.json()
+                debug_print('JSON = ', response_json)
+                return response_json
+            except json.JSONDecodeError as e:
+                debug_print("JSON decode error: ", e)
+        
+        TimeWait = random.randint(10, 20)+10
+        countdown_timer(TimeWait, 'Ждём после ввода кода')
 
 
 
@@ -164,8 +232,7 @@ def apply_promo(code_data):
                 debug_print("JSON decode error: ", e)
         
         TimeWait = random.randint(10, 20)+10
-        print('Ждём ', TimeWait,'c','задержка после ввода кода')
-        time.sleep(TimeWait)
+        countdown_timer(TimeWait, 'Ждём после ввода кода')
         
         
         
@@ -173,17 +240,22 @@ def apply_promo(code_data):
         
 
 def main():
+    promos = get_promos()
     try:
         for config in configurations:
+            for state in promos:
+                if state.get("promoId") == config['promo_id']:
+                    receive_keys_today = state.get("receiveKeysToday", "Значение отсутствует")
+                    break
+            
+            
             for _ in range(4):  # Запуск каждой конфигурации 4 раза
                 TimeWait = random.randint(int(config['rnd1']), int (config['rnd2']))+3
-                print('Ждём ', TimeWait,'c','до генерации следующего кода')
                 PromoCode = gen(config['app_token'], config['promo_id'], TimeWait, config['game'])
                 TimeWait = random.randint(15, 45)+3
-                print('Ждём ', TimeWait,'c','до ввода кода')
-                time.sleep(TimeWait)
+                countdown_timer(TimeWait, 'Ждём до ввода кода')
                 apply_promo(PromoCode)
-                time.sleep(TimeWait)
+                countdown_timer(TimeWait, 'Ждём до следующей иттерации '+config['game'])
     except Exception as error:
         print(f'Ошибка: {error}')
 
