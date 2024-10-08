@@ -90,14 +90,13 @@ def register_event(token, promo_id, delay):
         data = response.json()
         if not data.get('hasCode', False):
             print (data)
-            countdown_timer(delay, 'next try register_event')
-            
+            countdown_timer(random.randint(delay[0], delay[1]), 'next try register_event')
             return register_event(token, promo_id, delay)  # Рекурсивный вызов
         else:
             return True
     except Exception as error:
         print(f'Ошибка при register_event: {error}')
-        countdown_timer(20, 'Задержка после ошибки register_event')
+        countdown_timer(120, 'Задержка после ошибки register_event')
         return register_event(token, promo_id, delay)  # Рекурсивный вызов в случае ошибки
 
 
@@ -117,17 +116,17 @@ def create_code(token, promo_id):
             response = resp.json()
         except Exception as error:
             print(f'Ошибка при создании кода: {error}')
-            countdown_timer(20, 'Задержка после ошибки создании кода')
+            countdown_timer(120, 'Задержка после ошибки создании кода')
     return response['promoCode']
 
 
 
 
-
+ 
 def gen(app_token, promo_id, delay, game):
     token = login_client(app_token)
     print(f'Token for {app_token}: {token} game = {game}')
-    countdown_timer(delay, 'wait register_event')
+    countdown_timer(random.randint(delay[0], delay[1]), 'wait for register_event')
     register_event(token, promo_id, delay)
     code_data = create_code(token, promo_id)
     print(f'Сгенерированный код для {app_token} и {promo_id}: {code_data}')
@@ -142,36 +141,14 @@ def gen(app_token, promo_id, delay, game):
 
 def get_promos():
 #-----------------------------------------------###OPTIONS###-----------------------------------------------#  
-        
         resp = requests.options('https://api.hamsterkombatgame.io/interlude/get-promos', 
-        headers={
-            'accept': '*/*',
-            'accept-language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
-            'Content-Type': 'application/json; charset=utf-8',
-            'priority': 'u=1, i',
-            'sec-fetch-dest': 'empty',
-            'sec-fetch-mode': 'cors',
-            'sec-fetch-site': 'same-site',
-            'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Mobile Safari/537.36', 
-            'referrer': 'https://hamsterkombatgame.io/',
-        })
+        headers=get_headers_opt())
         print(f"get_promos [options] Status Code: {resp.status_code}")
       
         time.sleep(3)
 #-----------------------------------------------###POST###-----------------------------------------------#     
         resp = requests.post('https://api.hamsterkombatgame.io/interlude/get-promos', 
-        headers={
-            'accept': 'application/json',
-            'accept-language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
-            "Authorization": f"Bearer {Bearer_account}",
-            'Content-Type': 'application/json; charset=utf-8',
-            'priority': 'u=1, i',
-            'sec-fetch-dest': 'empty',
-            'sec-fetch-mode': 'cors',
-            'sec-fetch-site': 'same-site',
-            'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Mobile Safari/537.36', 
-            'referrer': 'https://hamsterkombatgame.io/',
-        })
+        headers=get_headers_post(Bearer_account))
         
         print(f"get_promos [post] Status Code: {resp.status_code}")
         if resp.content:
@@ -181,9 +158,7 @@ def get_promos():
                 return response_json
             except json.JSONDecodeError as e:
                 debug_print("JSON decode error: ", e)
-        
-        TimeWait = random.randint(10, 20)+10
-        countdown_timer(TimeWait, 'Ждём после ввода кода')
+        countdown_timer(random.randint(10, 20)+10, 'Ждём после ввода кода')
 
 
 
@@ -193,35 +168,14 @@ def apply_promo(code_data):
 #-----------------------------------------------###OPTIONS###-----------------------------------------------#  
         
         resp = requests.options('https://api.hamsterkombatgame.io/interlude/apply-promo', 
-        headers={
-            'accept': '*/*',
-            'accept-language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
-            'Content-Type': 'application/json; charset=utf-8',
-            'priority': 'u=1, i',
-            'sec-fetch-dest': 'empty',
-            'sec-fetch-mode': 'cors',
-            'sec-fetch-site': 'same-site',
-            'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Mobile Safari/537.36', 
-            'referrer': 'https://hamsterkombatgame.io/',
-        })
+        headers=get_headers_opt())
         print(f"Status Code: {resp.status_code}")
       
         time.sleep(3)
 #-----------------------------------------------###POST###-----------------------------------------------#     
         data = {"promoCode": code_data}
         resp = requests.post('https://api.hamsterkombatgame.io/interlude/apply-promo', 
-        headers={
-            'accept': 'application/json',
-            'accept-language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
-            "Authorization": f"Bearer {Bearer_account}",
-            'Content-Type': 'application/json; charset=utf-8',
-            'priority': 'u=1, i',
-            'sec-fetch-dest': 'empty',
-            'sec-fetch-mode': 'cors',
-            'sec-fetch-site': 'same-site',
-            'User-Agent': 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Mobile Safari/537.36', 
-            'referrer': 'https://hamsterkombatgame.io/',
-        },json=data)
+        headers=get_headers_post(Bearer_account),json=data)
         
         print(f"Status Code: {resp.status_code}")
         if resp.content:
@@ -231,9 +185,7 @@ def apply_promo(code_data):
                 #return response_json.get('dailyKeysMiniGame', {}).get('isClaimed') TODO
             except json.JSONDecodeError as e:
                 debug_print("JSON decode error: ", e)
-        
-        TimeWait = random.randint(10, 20)+10
-        countdown_timer(TimeWait, 'Ждём после ввода кода')
+        countdown_timer(random.randint(10, 20)+10, 'Ждём после ввода кода')
         
         
         
@@ -258,13 +210,11 @@ def main():
                 
             if keys_need > 0:
                 for _ in range(keys_need):  # Запуск каждой конфигурации keys_need раза
-                    TimeWait = random.randint(int(config['rnd1']), int (config['rnd2']))+3
+                    TimeWait = int(config['rnd1']), int(config['rnd2']) 
                     PromoCode = gen(config['app_token'], config['promo_id'], TimeWait, config['game'])
-                    TimeWait = random.randint(15, 45)+3
-                    countdown_timer(TimeWait, 'Ждём до ввода кода')
+                    countdown_timer(random.randint(15, 45)+3, 'Ждём до ввода кода')
                     apply_promo(PromoCode)
-                    TimeWait = random.randint(60, 320)+3
-                    countdown_timer(TimeWait, 'Ждём до следующей иттерации '+config['game'])
+                    countdown_timer(random.randint(60, 320)+3, 'Ждём до следующей иттерации '+config['game'])
             else:
                  print ("Ключей для ", config['game'],'больше не нужно :3')
             
