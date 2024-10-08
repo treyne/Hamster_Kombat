@@ -201,12 +201,13 @@ def main():
                 if state.get("promoId") == config['promo_id']:     
                     receive_keys_today = state.get("receiveKeysToday", 0)
                     break
-            try:
-                keys_need = 4 - receive_keys_today
-                print ("Нужно ключей для ", config['game'],' = ',keys_need)
-            except NameError:
-                keys_need = 4
-                print ("Нужно ключей для ", config['game'],' = ',keys_need)
+            keys_need = 4 - receive_keys_today        
+            # try:
+                # keys_need = 4 - receive_keys_today
+                # print ("Нужно ключей для ", config['game'],' = ',keys_need)
+            # except NameError:
+                # keys_need = 4
+            print ("Нужно ключей для ", config['game'],' = ',keys_need)
                 
             if keys_need > 0:
                 for _ in range(keys_need):  # Запуск каждой конфигурации keys_need раза
