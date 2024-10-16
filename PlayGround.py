@@ -14,6 +14,9 @@ DEBUG = True
 from headers import get_headers_opt, get_headers_post
 
 configurations = [
+    {'app_token': 'ed526e8c-e6c8-40fd-b72a-9e78ff6a2054', 'promo_id': 'ed526e8c-e6c8-40fd-b72a-9e78ff6a2054','rnd1':'100','rnd2':'122','game':'Cooking Stories'}, 
+    {'app_token': '8d1cc2ad-e097-4b86-90ef-7a27e19fb833', 'promo_id': 'dc128d28-c45b-411c-98ff-ac7726fbaea4','rnd1':'80','rnd2':'100','game':'Merge Away'},
+    {'app_token': 'c8e017e2-8817-4d02-bce6-b951e74bb18f', 'promo_id': 'c8e017e2-8817-4d02-bce6-b951e74bb18f','rnd1':'100','rnd2':'122','game':'Snake Run'}, 
     {'app_token': 'd02fc404-8985-4305-87d8-32bd4e66bb16', 'promo_id': 'd02fc404-8985-4305-87d8-32bd4e66bb16','rnd1':'80','rnd2':'120','game':'Factory World'},         
     {'app_token': '4bdc17da-2601-449b-948e-f8c7bd376553', 'promo_id': '4bdc17da-2601-449b-948e-f8c7bd376553','rnd1':'80','rnd2':'100','game':'Count Masters'},         
     {'app_token': '4bf4966c-4d22-439b-8ff2-dc5ebca1a600', 'promo_id': '4bf4966c-4d22-439b-8ff2-dc5ebca1a600','rnd1':'80','rnd2':'100','game':'Hide Ball'},     
@@ -21,12 +24,10 @@ configurations = [
     {'app_token': '04ebd6de-69b7-43d1-9c4b-04a6ca3305af', 'promo_id': '04ebd6de-69b7-43d1-9c4b-04a6ca3305af','rnd1':'80','rnd2':'100','game':'Stone Age'},     
     {'app_token': 'b2436c89-e0aa-4aed-8046-9b0515e1c46b', 'promo_id': 'b2436c89-e0aa-4aed-8046-9b0515e1c46b','rnd1':'80','rnd2':'100','game':'Zoopolis'},     
     {'app_token': '2aaf5aee-2cbc-47ec-8a3f-0962cc14bc71', 'promo_id': '2aaf5aee-2cbc-47ec-8a3f-0962cc14bc71','rnd1':'80','rnd2':'100','game':'Polysphere'},     
-    {'app_token': '8d1cc2ad-e097-4b86-90ef-7a27e19fb833', 'promo_id': 'dc128d28-c45b-411c-98ff-ac7726fbaea4','rnd1':'80','rnd2':'100','game':'Merge Away'},     
     {'app_token': 'd1690a07-3780-4068-810f-9b5bbf2931b2', 'promo_id': 'b4170868-cef0-424f-8eb9-be0622e8e8e3','rnd1':'80','rnd2':'100','game':'Chain Cube 2048'},     
     {'app_token': '82647f43-3f87-402d-88dd-09a90025313f', 'promo_id': 'c4480ac7-e178-4973-8061-9ed5b2e17954','rnd1':'125','rnd2':'140','game':'Train Miner'},   
-    {'app_token': 'ed526e8c-e6c8-40fd-b72a-9e78ff6a2054', 'promo_id': 'ed526e8c-e6c8-40fd-b72a-9e78ff6a2054','rnd1':'100','rnd2':'122','game':'Cooking Stories'},   
-    {'app_token': 'c8e017e2-8817-4d02-bce6-b951e74bb18f', 'promo_id': 'c8e017e2-8817-4d02-bce6-b951e74bb18f','rnd1':'100','rnd2':'122','game':'Snake Run'},   
-    {'app_token': 'eb518c4b-e448-4065-9d33-06f3039f0fcb', 'promo_id': 'eb518c4b-e448-4065-9d33-06f3039f0fcb','rnd1':'100','rnd2':'122','game':'Infected Frontier'},   
+    {'app_token': 'eb518c4b-e448-4065-9d33-06f3039f0fcb', 'promo_id': 'eb518c4b-e448-4065-9d33-06f3039f0fcb','rnd1':'100','rnd2':'122','game':'Infected Frontier'},  
+    {'app_token': '53bf823a-948c-48c4-8bd5-9c21903416df', 'promo_id': '53bf823a-948c-48c4-8bd5-9c21903416df','rnd1':'100','rnd2':'122','game':'Tower Defense'},    
     
 ]
 
@@ -149,16 +150,15 @@ def get_promos():
 #-----------------------------------------------###POST###-----------------------------------------------#     
         resp = requests.post('https://api.hamsterkombatgame.io/interlude/get-promos', 
         headers=get_headers_post(Bearer_account))
-        
         print(f"get_promos [post] Status Code: {resp.status_code}")
         if resp.content:
             try:
                 response_json = resp.json()
-                #debug_print('JSON = ', response_json)
+                debug_print('get_promos JSON = ', response_json)
                 return response_json
             except json.JSONDecodeError as e:
                 debug_print("JSON decode error: ", e)
-        countdown_timer(random.randint(10, 20)+10, 'Ждём после ввода кода')
+        countdown_timer(random.randint(10, 20)+10, 'Ждём после JSON decode error')
 
 
 
@@ -202,12 +202,10 @@ def main():
                     receive_keys_today = state.get("receiveKeysToday", 0)
                     break
             keys_need = 4 - receive_keys_today        
-            # try:
-                # keys_need = 4 - receive_keys_today
-                # print ("Нужно ключей для ", config['game'],' = ',keys_need)
-            # except NameError:
-                # keys_need = 4
             print ("Нужно ключей для ", config['game'],' = ',keys_need)
+            
+            # promos = get_promos().get("states", None) #Обновляем promos
+            # print('promos JSON update = ', promos)
                 
             if keys_need > 0:
                 for _ in range(keys_need):  # Запуск каждой конфигурации keys_need раза
