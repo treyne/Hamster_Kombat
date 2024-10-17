@@ -4,11 +4,14 @@ import random
 import uuid
 import os
 from dotenv import load_dotenv
+from datetime import datetime
+import json 
 
 # Загрузка переменных из .env файла
 load_dotenv()
 Bearer_account = os.getenv('Bearer')
 DEBUG = True
+LOG_ON = True
 
 # Импортируем функции для получения заголовков
 from headers import get_headers_opt, get_headers_post
@@ -20,8 +23,7 @@ configurations = [
     {'app_token': 'd02fc404-8985-4305-87d8-32bd4e66bb16', 'promo_id': 'd02fc404-8985-4305-87d8-32bd4e66bb16','rnd1':'80','rnd2':'120','game':'Factory World'},         
     {'app_token': '4bdc17da-2601-449b-948e-f8c7bd376553', 'promo_id': '4bdc17da-2601-449b-948e-f8c7bd376553','rnd1':'80','rnd2':'100','game':'Count Masters'},         
     {'app_token': '4bf4966c-4d22-439b-8ff2-dc5ebca1a600', 'promo_id': '4bf4966c-4d22-439b-8ff2-dc5ebca1a600','rnd1':'80','rnd2':'100','game':'Hide Ball'},     
-    {'app_token': 'bc72d3b9-8e91-4884-9c33-f72482f0db37', 'promo_id': 'bc72d3b9-8e91-4884-9c33-f72482f0db37','rnd1':'80','rnd2':'100','game':'Bouncemasters'},     
-    {'app_token': '04ebd6de-69b7-43d1-9c4b-04a6ca3305af', 'promo_id': '04ebd6de-69b7-43d1-9c4b-04a6ca3305af','rnd1':'80','rnd2':'100','game':'Stone Age'},     
+    {'app_token': 'bc72d3b9-8e91-4884-9c33-f72482f0db37', 'promo_id': 'bc72d3b9-8e91-4884-9c33-f72482f0db37','rnd1':'80','rnd2':'100','game':'Bouncemasters'},         
     {'app_token': 'b2436c89-e0aa-4aed-8046-9b0515e1c46b', 'promo_id': 'b2436c89-e0aa-4aed-8046-9b0515e1c46b','rnd1':'80','rnd2':'100','game':'Zoopolis'},     
     {'app_token': '2aaf5aee-2cbc-47ec-8a3f-0962cc14bc71', 'promo_id': '2aaf5aee-2cbc-47ec-8a3f-0962cc14bc71','rnd1':'80','rnd2':'100','game':'Polysphere'},     
     {'app_token': 'd1690a07-3780-4068-810f-9b5bbf2931b2', 'promo_id': 'b4170868-cef0-424f-8eb9-be0622e8e8e3','rnd1':'80','rnd2':'100','game':'Chain Cube 2048'},     
@@ -34,7 +36,23 @@ configurations = [
 
 def debug_print(*args):
     if DEBUG:
+        # Печать в консоль
         print(*args)
+
+            
+            
+def LOG(*args):
+    if LOG_ON:
+        # Формирование имени файла
+        current_time = datetime.now()
+        file_name = f"PlayGround_{current_time.strftime('%d.%m.%Y_%H-%M')}.txt"
+
+        # Запись в файл с кодировкой utf-8
+        try:
+            with open(file_name, 'a', encoding='utf-8') as file:
+                file.write(' '.join(map(str, args)) + '\n')
+        except Exception as e:
+            print(f"Error writing to file: {e}")            
 
 
 def countdown_timer(seconds, text):
@@ -68,16 +86,19 @@ def login_client(app_token):
         response.raise_for_status()
         data = response.json()
         print('login-client [clientToken] = ',data['clientToken'])
+        LOG('login-client [clientToken] = ',data['clientToken'])
         return data['clientToken']
     except Exception as error:
         print(f'Ошибка при входе клиента: {error}')
+        LOG(f'Ошибка при входе клиента: {error}')
         countdown_timer(20, 'timer after login_client Error')
         return login_client(app_token)  # Рекурсивный вызов
 
 
 def register_event(token, promo_id, delay):
     event_id = str(uuid.uuid4())
-    print (event_id)
+    print ("event_id"+event_id)
+    LOG("event_id"+event_id)
     try:
         response = requests.post('https://api.gamepromo.io/promo/register-event', json={
             'promoId': promo_id,
@@ -91,12 +112,14 @@ def register_event(token, promo_id, delay):
         data = response.json()
         if not data.get('hasCode', False):
             print (data)
+            LOG(data)
             countdown_timer(random.randint(delay[0], delay[1]), 'next try register_event')
             return register_event(token, promo_id, delay)  # Рекурсивный вызов
         else:
             return True
     except Exception as error:
         print(f'Ошибка при register_event: {error}')
+        LOG(f'Ошибка при register_event: {error}')
         countdown_timer(120, 'Задержка после ошибки register_event')
         return register_event(token, promo_id, delay)  # Рекурсивный вызов в случае ошибки
 
@@ -117,6 +140,7 @@ def create_code(token, promo_id):
             response = resp.json()
         except Exception as error:
             print(f'Ошибка при создании кода: {error}')
+            LOG(f'Ошибка при создании кода: {error}')
             countdown_timer(120, 'Задержка после ошибки создании кода')
     return response['promoCode']
 
@@ -127,10 +151,12 @@ def create_code(token, promo_id):
 def gen(app_token, promo_id, delay, game):
     token = login_client(app_token)
     print(f'Token for {app_token}: {token} game = {game}')
+    LOG(f'Token for {app_token}: {token} game = {game}')
     countdown_timer(random.randint(delay[0], delay[1]), 'wait for register_event')
     register_event(token, promo_id, delay)
     code_data = create_code(token, promo_id)
     print(f'Сгенерированный код для {app_token} и {promo_id}: {code_data}')
+    LOG(f'Сгенерированный код для {app_token} и {promo_id}: {code_data}')
     return code_data
 
 
@@ -145,19 +171,23 @@ def get_promos():
         resp = requests.options('https://api.hamsterkombatgame.io/interlude/get-promos', 
         headers=get_headers_opt())
         print(f"get_promos [options] Status Code: {resp.status_code}")
+        LOG(f"get_promos [options] Status Code: {resp.status_code}")
       
         time.sleep(3)
 #-----------------------------------------------###POST###-----------------------------------------------#     
         resp = requests.post('https://api.hamsterkombatgame.io/interlude/get-promos', 
         headers=get_headers_post(Bearer_account))
         print(f"get_promos [post] Status Code: {resp.status_code}")
+        LOG(f"get_promos [post] Status Code: {resp.status_code}")
         if resp.content:
             try:
                 response_json = resp.json()
                 debug_print('get_promos JSON = ', response_json)
+                LOG('get_promos JSON = ', response_json)
                 return response_json
             except json.JSONDecodeError as e:
                 debug_print("JSON decode error: ", e)
+                LOG("JSON decode error: ", e)
         countdown_timer(random.randint(10, 20)+10, 'Ждём после JSON decode error')
 
 
@@ -170,6 +200,7 @@ def apply_promo(code_data):
         resp = requests.options('https://api.hamsterkombatgame.io/interlude/apply-promo', 
         headers=get_headers_opt())
         print(f"Status Code: {resp.status_code}")
+        LOG(f"Status Code: {resp.status_code}")
       
         time.sleep(3)
 #-----------------------------------------------###POST###-----------------------------------------------#     
@@ -178,13 +209,16 @@ def apply_promo(code_data):
         headers=get_headers_post(Bearer_account),json=data)
         
         print(f"Status Code: {resp.status_code}")
+        LOG(f"Status Code: {resp.status_code}")
         if resp.content:
             try:
                 response_json = resp.json()
-                print('JSON = ', response_json)
+                print('apply_promo JSON = ', response_json)
+                LOG('apply_promo JSON = ', response_json)
                 #return response_json.get('dailyKeysMiniGame', {}).get('isClaimed') TODO
             except json.JSONDecodeError as e:
                 debug_print("JSON decode error: ", e)
+                LOG("JSON decode error: ", e)
         countdown_timer(random.randint(10, 20)+10, 'Ждём после ввода кода')
         
         
@@ -195,6 +229,7 @@ def apply_promo(code_data):
 def main():
     promos = get_promos().get("states", None) 
     print('promos JSON = ', promos)
+    LOG('promos JSON = ', promos)
     try:
         for config in configurations:
             for state in promos:
@@ -203,7 +238,7 @@ def main():
                     break
             keys_need = 4 - receive_keys_today        
             print ("Нужно ключей для ", config['game'],' = ',keys_need)
-            
+            LOG("Нужно ключей для ", config['game'],' = ',keys_need)
             # promos = get_promos().get("states", None) #Обновляем promos
             # print('promos JSON update = ', promos)
                 
@@ -216,9 +251,11 @@ def main():
                     countdown_timer(random.randint(60, 320)+3, 'Ждём до следующей иттерации '+config['game'])
             else:
                  print ("Ключей для ", config['game'],'больше не нужно :3')
+                 LOG(data)
             
     except Exception as error:
         print(f'Ошибка: {error}')
+        LOG(data)
 
 if __name__ == "__main__":
     main()
