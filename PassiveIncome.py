@@ -8,7 +8,7 @@ import hashlib
 import datetime
 from dotenv import load_dotenv
 import re
-
+from datetime import datetime
 
 
 # Загрузка переменных из .env файла
@@ -20,6 +20,20 @@ DEBUG = True
 from headers import get_headers_opt, get_headers_post
 
 BASE_URL = "https://api.hamsterkombatgame.io"
+
+
+
+def countdown_timer(seconds, text):
+    while seconds:
+        mins, secs = divmod(seconds, 60)
+        timer = text + " {:02d}:{:02d}".format(mins, secs)
+        print(timer, end="\r")  # Перезаписываем строку
+        time.sleep(1)
+        seconds -= 1
+    # Очищаем строку после завершения
+    print(' ' * len(timer), end='\r')
+
+
 
 def debug_print(*args):
     if DEBUG:
@@ -198,22 +212,6 @@ def list_tasks():
 
 
 
-def check_task(idTask):
-    url = f"{BASE_URL}/interlude/check-task"
-    perform_options_request(url)
-    headers_post = get_headers_post(Bearer)  # Получаем заголовки POST запроса
-    data={'taskId': idTask}
-    response = requests.post(url, headers=headers_post, json=data)
-    debug_print(f"Status Code: {response.status_code}")
-    if response.content:
-        try:
-            response_json = response.json()
-            debug_print('JSON = ', response_json)
-            return response_json
-        except json.JSONDecodeError as e:
-            debug_print("JSON decode error: ", e)
-            return None
-    return None                
            
         
         
@@ -221,19 +219,14 @@ def check_task(idTask):
     
 
 def main():
-    nuxt()
-    IP()
-    account_info()
-    sync()
-    get_promos()
-    game_config()
-    tasks = list_tasks()
-    for task in tasks['tasks']:
-        if not task['isCompleted']:
-            task_id = task['id']
-            check_task(task_id)
-            time.sleep(5)
-    time.sleep(60)
-
+    while True:
+        nuxt()
+        IP()
+        account_info()
+        sync()
+        get_promos()
+        game_config()
+        countdown_timer(random.randint(1800, 11000),'До следующего логина: ')
+        time.sleep(5)
 if __name__ == "__main__":
     main()
